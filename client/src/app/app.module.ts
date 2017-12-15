@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { Angular2TokenService, A2tUiModule } from 'angular2-token';
 
+import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AuthenticationService } from './shared/services/authentication.service';
@@ -13,7 +14,7 @@ import { AlertService } from './shared/services/alert.service';
 import { AuthGuard } from './shared/guards/auth.guard';
 
 import { AppComponent } from './app.component';
-import { AlertComponent } from './shared/directives/alert.component';
+import { EmptyComponent } from './empty.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { LoginComponent } from './features/login/login.component';
 import { RegisterComponent } from './features/register/register.component';
@@ -24,8 +25,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 
 @NgModule({
   declarations: [
+    EmptyComponent,
     AppComponent,
-    AlertComponent,
     NavbarComponent,
     FooterComponent,
     LoginComponent,
@@ -39,7 +40,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     HttpModule,
     FormsModule,
     AppRoutingModule,
-    A2tUiModule
+    A2tUiModule,
+    SharedModule
   ],
   providers: [
     Angular2TokenService,
@@ -48,7 +50,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     AlertService,
   ],
   bootstrap: [
-    AppComponent
+    EmptyComponent
   ]
 })
 export class AppModule { }

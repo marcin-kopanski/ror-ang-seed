@@ -8,6 +8,9 @@ export class AlertService {
   private subject = new Subject<any>();
   private keepAfterNavigationChange = false;
 
+  private resetAlerts = new Subject<void>();
+  alertsReset$ = this.resetAlerts.asObservable();
+
   constructor(private router: Router) {
     router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
@@ -15,6 +18,7 @@ export class AlertService {
           this.keepAfterNavigationChange = false;
         } else {
           this.subject.next();
+          this.resetAlerts.next();
         }
       }
     });
@@ -32,5 +36,9 @@ export class AlertService {
 
   getMessage(): Observable<any> {
     return this.subject.asObservable();
+  }
+
+  isKeepAfterNavigationChange(): boolean {
+    return this.keepAfterNavigationChange;
   }
 }

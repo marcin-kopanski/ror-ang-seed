@@ -10,9 +10,23 @@ import { AlertService } from '../services/alert.service';
 export class AlertComponent {
   messages: any[] = [];
 
-  constructor(private alertService: AlertService) { }
+  constructor(
+    private alertService: AlertService
+  ) { }
 
   ngOnInit() {
-    this.alertService.getMessage().subscribe(message => { this.messages.push(message); });
+    this.alertService.getMessage().subscribe(
+      message => {
+        console.log(message);
+        this.messages.push(message);
+      }
+    );
+
+    this.alertService.alertsReset$.subscribe(
+      value => {
+        console.log("alertsReset");
+        this.messages.splice(0, this.messages.length);
+      }
+    );
   }
 }

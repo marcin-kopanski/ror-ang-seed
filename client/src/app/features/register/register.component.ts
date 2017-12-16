@@ -35,10 +35,14 @@ export class RegisterComponent {
           this.router.navigate(['/login']);
         },
         errors => {
-          errors.json().errors.full_messages.forEach((msg) => {
-            this.alertService.error(msg);
-          });
-          this.loading = false;
+          console.log(errors);
+          if (errors) {
+            console.log(errors.json().errors.full_messages);
+            errors.json().errors.full_messages.forEach((msg) => {
+              this.alertService.error(msg);
+            });
+            this.loading = false;
+          }
         });
   }
 }

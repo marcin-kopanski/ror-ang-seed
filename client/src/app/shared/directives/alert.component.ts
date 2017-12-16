@@ -3,16 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { AlertService } from '../services/alert.service';
 
 @Component({
-    moduleId: module.id.toString(),
-    selector: 'alert',
-    templateUrl: 'alert.component.html'
+  moduleId: module.id.toString(),
+  selector: 'alert',
+  templateUrl: 'alert.component.html'
 })
 export class AlertComponent {
-    message: any;
+  messages: any[] = [];
 
-    constructor(private alertService: AlertService) { }
+  constructor(private alertService: AlertService) { }
 
-    ngOnInit() {
-        this.alertService.getMessage().subscribe(message => { this.message = message; });
-    }
+  ngOnInit() {
+    this.alertService.getMessage().subscribe(message => { this.messages.push(message); });
+  }
 }

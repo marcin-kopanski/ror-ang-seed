@@ -2,33 +2,43 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertService } from '../../shared/services/alert.service';
-// import { UsersService } from '../services/users.service';
+import { AuthenticationService } from '../../shared/services/authentication.service';
 
 @Component({
-    moduleId: module.id.toString(),
-    templateUrl: 'register.component.html'
+  moduleId: module.id.toString(),
+  templateUrl: 'register.component.html'
 })
-
 export class RegisterComponent {
-    model: any = {};
-    loading = false;
 
-    constructor(
-        private router: Router,
-        // private usersService: UsersService,
-        private alertService: AlertService) { }
+  signUpUser = {
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    passwordConfirmation: ''
+  };
 
-    register() {
-        this.loading = true;
-        // this.usersService.create(this.model)
-        //     .subscribe(
-        //         data => {
-        //             this.alertService.success('Registration successful', true);
-        //             this.router.navigate(['/login']);
-        //         },
-        //         error => {
-        //             this.alertService.error(error);
-        //             this.loading = false;
-        //         });
-    }
+  loading = false;
+
+  constructor(
+    private router: Router,
+    private alertService: AlertService,
+    private authService: AuthenticationService
+  ) { }
+
+  onSignUpSubmit() {
+    this.loading = true;
+    this.authService.register(this.signUpUser)
+      .subscribe(
+        data => {
+          this.alertService.success('Registration successful', true);
+          this.router.navigate(['/login']);
+        },
+        errors => {
+          errors.json().errors.full_messages.forEach((msg) => {
+            this.alertService.error(msg);
+          });
+          this.loading = false;
+        });
+  }
 }

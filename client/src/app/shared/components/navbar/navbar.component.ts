@@ -9,9 +9,13 @@ import { Angular2TokenService } from 'angular2-token';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private _tokenService: Angular2TokenService) { }
+  constructor(private authToken: Angular2TokenService) { }
 
   ngOnInit() {
+  }
+
+  signOutClick(): void {
+    this.authToken.signOut();
   }
 
 }

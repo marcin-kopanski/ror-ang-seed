@@ -13,6 +13,5 @@ import { Angular2TokenService } from 'angular2-token';
 export class EmptyComponent {
   title = 'empty';
 
-  constructor() {
-  }
+  constructor() { }
 }

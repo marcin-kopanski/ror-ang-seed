@@ -16,7 +16,6 @@ export class AuthenticationService {
   constructor (
     private http: Http,
     private authToken: Angular2TokenService) {
-    this.authToken.init(environment.token_auth_config);
   }
 
   signUp(

@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
         },
         errors => {
           if (errors) {
-            errors.json().errors.full_messages.forEach((msg) => {
+            errors.json().errors.forEach((msg) => {
               this.alertService.error(msg);
             });
             this.loading = false;

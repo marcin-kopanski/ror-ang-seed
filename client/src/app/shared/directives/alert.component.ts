@@ -17,14 +17,12 @@ export class AlertComponent {
   ngOnInit() {
     this.alertService.getMessage().subscribe(
       message => {
-        console.log(message);
-        this.messages.push(message);
+        if (message) this.messages.push(message);
       }
     );
 
     this.alertService.alertsReset$.subscribe(
       value => {
-        console.log("alertsReset");
         this.messages.splice(0, this.messages.length);
       }
     );

@@ -15,7 +15,8 @@ export class RegisterComponent {
     last_name: '',
     email: '',
     password: '',
-    passwordConfirmation: ''
+    passwordConfirmation: '',
+    userType: 'USER'
   };
 
   loading = false;
@@ -28,16 +29,14 @@ export class RegisterComponent {
 
   onSignUpSubmit() {
     this.loading = true;
-    this.authService.register(this.signUpUser)
+    this.authService.signUp(this.signUpUser)
       .subscribe(
         data => {
           this.alertService.success('Registration successful', true);
           this.router.navigate(['/login']);
         },
         errors => {
-          console.log(errors);
           if (errors) {
-            console.log(errors.json().errors.full_messages);
             errors.json().errors.full_messages.forEach((msg) => {
               this.alertService.error(msg);
             });

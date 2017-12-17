@@ -9,7 +9,9 @@ import { environment } from "../../../environments/environment";
 
 @Injectable()
 export class AuthenticationService {
+  userSignedUp:Subject<boolean> = new Subject();
   userSignedIn:Subject<boolean> = new Subject();
+  userSignedOut:Subject<boolean> = new Subject();
 
   constructor (
     private http: Http,
@@ -17,17 +19,34 @@ export class AuthenticationService {
     this.authToken.init(environment.token_auth_config);
   }
 
-  register(
+  signUp(
     signUpData:
       {
-        first_name:string,
-        last_name:string,
-        email:string,
-        password:string,
-        passwordConfirmation:string
+        first_name:           string,
+        last_name:            string,
+        email:                string,
+        password:             string,
+        passwordConfirmation: string,
+        userType?:            string
       }
   ):Observable<Response> {
     return this.authToken.registerAccount(signUpData).map(
+      res => {
+        this.userSignedUp.next(true);
+        return res;
+      }
+    );
+  }
+
+  signIn(
+    signInData:
+      {
+        email:                string,
+        password:             string,
+        userType?:            string
+      }
+  ):Observable<Response> {
+    return this.authToken.signIn(signInData).map(
       res => {
         this.userSignedIn.next(true);
         return res;
@@ -35,32 +54,9 @@ export class AuthenticationService {
     );
   }
 
-  login(username: string, password: string) {
-      return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-          .map((response: Response) => {
-              // login successful if there's a jwt token in the response
-              let user = response.json();
-              if (user && user.token) {
-                  // store user details and jwt token in local storage to keep user logged in between page refreshes
-                  localStorage.setItem('currentUser', JSON.stringify(user));
-              }
-          });
-
-      // this.authToken.signIn({email: "user@example.com", password: "monkey67"}).subscribe(
-      //     res => {
-      //       console.log('auth response:', res);
-      //       console.log('auth response headers: ', res.headers.toJSON()); //log the response header to show the auth token
-      //       console.log('auth response body:', res.json()); //log the response body to show the user
-      //     },
-      //
-      //     err => {
-      //       console.error('auth error:', err);
-      //     }
-      // )
-  }
-
-  logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+  signOut() {
+    this.authToken.signOut().subscribe(
+      res => this.userSignedOut.next(true)
+    );
   }
 }

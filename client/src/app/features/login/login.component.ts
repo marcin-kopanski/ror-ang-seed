@@ -5,39 +5,50 @@ import { AuthenticationService } from '../../shared/services/authentication.serv
 import { AlertService } from '../../shared/services/alert.service';
 
 @Component({
-  selector: 'app-news',
+  moduleId: module.id.toString(),
   templateUrl: 'login.component.html'
 })
 export class LoginComponent implements OnInit {
-  model: any = {};
+
+  signInUser = {
+    email: '',
+    password: '',
+    userType: 'USER'
+  };
+
   loading = false;
   returnUrl: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthenticationService
   ) { }
 
   ngOnInit() {
     // reset login status
-    this.authenticationService.logout();
+    // this.authenticationService.userSignOut();
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['return_url'] || '/';
   }
 
-  login() {
+  onSignInSubmit() {
     this.loading = true;
-    this.authenticationService.login(this.model.username, this.model.password)
+    this.authService.signIn(this.signInUser)
       .subscribe(
         data => {
+          this.alertService.success('Login successful', true);
           this.router.navigate([this.returnUrl]);
         },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
+        errors => {
+          if (errors) {
+            errors.json().errors.full_messages.forEach((msg) => {
+              this.alertService.error(msg);
+            });
+            this.loading = false;
+          }
         });
   }
 }

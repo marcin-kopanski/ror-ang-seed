@@ -18,7 +18,7 @@
           <a routerLink="/contact" routerLinkActive="active" class="nav-link">Contact</a>
         </li>
         <li *ngIf="authToken.userSignedIn()" class="nav-item">
-          <a href="#" (click)="signOutClick()" routerLinkActive="active" class="nav-link">Sign out</a>
+          <a (click)="signOutClick()" class="nav-link">Sign out</a>
         </li>
         <li *ngIf="!authToken.userSignedIn()" class="nav-item">
           <a routerLink="/login" routerLinkActive="active" class="nav-link">Sign in</a>
